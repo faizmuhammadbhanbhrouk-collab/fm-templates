@@ -221,6 +221,12 @@ body.detail .feedback-fab{display:none}
 .fb-actions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
 .fb-actions .btn{flex:1}
 .fb-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin:12px 0 0}
+.fb-status{font-size:13.5px;font-weight:700;line-height:1.5;margin:12px 0 0;padding:11px 13px;border-radius:10px}
+.fb-status.ok{background:var(--green-soft);color:#0a5f4a}
+.fb-status.err{background:var(--rose-soft);color:#8c2440}
+html[data-theme="dark"] .fb-status.ok{color:#7fe3c3}
+html[data-theme="dark"] .fb-status.err{color:#ffb3c2}
+.fb-actions .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
 .fb-head{display:flex;align-items:flex-start;gap:10px}
 @media (max-width:640px){.feedback-fab{right:16px;bottom:16px;padding:12px 18px}.fb-overlay{padding:12px;align-items:flex-end;justify-content:center}}
 
@@ -608,10 +614,11 @@ img,video,iframe,table{max-width:100%}
         <textarea id="fbMsg" placeholder="Apna feedback yahan likho..." required></textarea>
       </div>
       <div class="fb-actions">
-        <button class="btn btn-primary" type="submit">✉ Email Se Bhejo</button>
+        <button class="btn btn-primary" type="submit" id="fbSend">✉ Feedback Bhejo</button>
         <a class="btn btn-ghost" href="mailto:faizmuhammadbhanbhrouk@gmail.com?subject=FM_Templates%20Feedback">Direct Email Karo</a>
       </div>
-      <p class="fb-note">“Email Se Bhejo” dabane par tumhara email app khulega, message pehle se likha hoga — bas Send dabana hai. Message isi email par ayega: faizmuhammadbhanbhrouk@gmail.com</p>
+      <p class="fb-status" id="fbStatus" role="status" hidden></p>
+      <p class="fb-note">“Feedback Bhejo” dabane par tumhara feedback <b>seedha email ban kar</b> is address par chala jayega: faizmuhammadbhanbhrouk@gmail.com — koi email app kholne ya alag se Send dabane ki zaroorat nahi. Agar net slow ho to thora intezar karna, “bhej raha hai” wala message aayega.</p>
     </form>
   </div>
 </div>
@@ -1964,16 +1971,57 @@ document.getElementById("fbForm").addEventListener("submit", function(e){
   var email = document.getElementById("fbEmail").value.trim();
   var type = document.getElementById("fbType").value;
   var msg = document.getElementById("fbMsg").value.trim();
-  if(!name || !email || !msg){ toast("Pehle naam, email aur message likho."); return; }
-  var subject = "FM_Templates Feedback — " + type;
-  var body = "Naam: " + name + "\nEmail: " + email + "\nQisam: " + type + "\nRating: " + (fbRating ? fbRating + " / 5 stars" : "Nahi di") + "\n\nMessage:\n" + msg;
-  var mailLink = document.createElement("a");
-  mailLink.href = "mailto:faizmuhammadbhanbhrouk@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-  document.body.appendChild(mailLink);
-  mailLink.click();
-  document.body.removeChild(mailLink);
-  closeFeedback();
-  toast("Email app khul raha hai — bas Send dabana hai!");
+  var status = document.getElementById("fbStatus");
+  var sendBtn = document.getElementById("fbSend");
+  function showStatus(text, cls){
+    status.textContent = text;
+    status.className = "fb-status " + cls;
+    status.hidden = false;
+  }
+  if(!name || !email || !msg){ showStatus("Pehle naam, email aur message likho.", "err"); return; }
+  sendBtn.disabled = true;
+  sendBtn.textContent = "Bhej raha hai…";
+  showStatus("Feedback bheja ja raha hai, thora intezar karo…", "ok");
+  /* Seedha delivery: FormSubmit AJAX is email par email bhejta hai — user ko email app nahi kholna parta */
+  fetch("https://formsubmit.co/ajax/faizmuhammadbhanbhrouk@gmail.com", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      _subject: "FM_Templates Feedback — " + type,
+      _template: "table",
+      _captcha: "false",
+      _replyto: email,
+      Naam: name,
+      Email: email,
+      Qisam: type,
+      Rating: fbRating ? fbRating + " / 5 stars" : "Nahi di",
+      Message: msg
+    })
+  }).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(data){
+    if(data && (data.success === "true" || data.success === true)){
+      showStatus("✓ Shukriya! Tumhara feedback seedha faizmuhammadbhanbhrouk@gmail.com par bhej diya gaya hai.", "ok");
+      toast("Feedback bhej diya gaya — shukriya!");
+      document.getElementById("fbForm").reset();
+      fbRating = 0;
+      document.querySelectorAll("#fbStars button").forEach(function(x){ x.classList.remove("on"); });
+      setTimeout(closeFeedback, 2600);
+    } else {
+      throw new Error("delivery-failed");
+    }
+  }).catch(function(){
+    /* Backup: agar direct delivery na ho sake to purana email-app wala tareeqa khol do */
+    showStatus("Direct bhejna nahi ho saka — tumhara email app khol raha hoon, wahan bas Send dabana hai.", "err");
+    var subject = "FM_Templates Feedback — " + type;
+    var body = "Naam: " + name + "\nEmail: " + email + "\nQisam: " + type + "\nRating: " + (fbRating ? fbRating + " / 5 stars" : "Nahi di") + "\n\nMessage:\n" + msg;
+    var mailLink = document.createElement("a");
+    mailLink.href = "mailto:faizmuhammadbhanbhrouk@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    document.body.appendChild(mailLink);
+    mailLink.click();
+    document.body.removeChild(mailLink);
+  }).finally(function(){
+    sendBtn.disabled = false;
+    sendBtn.textContent = "✉ Feedback Bhejo";
+  });
 });
 
 /* ================= DARK / LIGHT THEME ================= */

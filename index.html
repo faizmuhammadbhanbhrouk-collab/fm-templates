@@ -580,18 +580,24 @@ img,video,iframe,table{max-width:100%}
       </div>
       <button class="xbtn" id="fbClose" type="button" aria-label="Band karo">✕</button>
     </div>
-    <form id="fbForm">
+    <form id="fbForm" action="https://formsubmit.co/faizmuhammadbhanbhrouk@gmail.com" method="POST" target="_blank">
+      <input type="hidden" name="_subject" id="fbSubject" value="FM_Templates Feedback">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_replyto" id="fbReplyto" value="">
+      <input type="hidden" name="Rating" id="fbRatingField" value="Nahi di">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="fb-field">
         <label for="fbName">Tumhara naam</label>
-        <input id="fbName" type="text" placeholder="Apna naam likho" required>
+        <input id="fbName" name="Naam" type="text" placeholder="Apna naam likho" required>
       </div>
       <div class="fb-field">
         <label for="fbEmail">Tumhari email</label>
-        <input id="fbEmail" type="email" placeholder="name@example.com" required>
+        <input id="fbEmail" name="Email" type="email" placeholder="name@example.com" required>
       </div>
       <div class="fb-field">
         <label for="fbType">Feedback kis bare mein hai?</label>
-        <select id="fbType">
+        <select id="fbType" name="Qisam">
           <option>Template ke bare mein</option>
           <option>Naya template chahiye</option>
           <option>Koi template chal nahi raha</option>
@@ -611,14 +617,14 @@ img,video,iframe,table{max-width:100%}
       </div>
       <div class="fb-field">
         <label for="fbMsg">Tumhara message</label>
-        <textarea id="fbMsg" placeholder="Apna feedback yahan likho..." required></textarea>
+        <textarea id="fbMsg" name="Message" placeholder="Apna feedback yahan likho..." required></textarea>
       </div>
       <div class="fb-actions">
         <button class="btn btn-primary" type="submit" id="fbSend">✉ Feedback Bhejo</button>
         <a class="btn btn-ghost" href="mailto:faizmuhammadbhanbhrouk@gmail.com?subject=FM_Templates%20Feedback">Direct Email Karo</a>
       </div>
       <p class="fb-status" id="fbStatus" role="status" hidden></p>
-      <p class="fb-note">“Feedback Bhejo” dabane par tumhara feedback <b>seedha email ban kar</b> is address par chala jayega: faizmuhammadbhanbhrouk@gmail.com — koi email app kholne ya alag se Send dabane ki zaroorat nahi. Agar net slow ho to thora intezar karna, “bhej raha hai” wala message aayega.</p>
+      <p class="fb-note">“Feedback Bhejo” dabane par tumhara feedback <b>seedha email ban kar</b> is address par chala jayega: faizmuhammadbhanbhrouk@gmail.com — koi email app kholne ya alag se Send dabane ki zaroorat nahi. Agar net slow ho to thora intezar karna, “bhej raha hai” wala message aayega.<br><b>Site owner ke liye ek dafa ka step:</b> pehle feedback par FormSubmit is Gmail par ek <b>activation email</b> bhejta hai — us mein diya link ek dafa click karke confirm karna zaroori hai, uske baghair koi feedback inbox mein nahi aayega. Confirm ke baad har feedback khud-ba-khud aana shuru ho jayega.</p>
     </form>
   </div>
 </div>
@@ -1967,22 +1973,52 @@ document.querySelectorAll("#fbStars button").forEach(function(b){
 });
 document.getElementById("fbForm").addEventListener("submit", function(e){
   e.preventDefault();
+  var form = document.getElementById("fbForm");
   var name = document.getElementById("fbName").value.trim();
   var email = document.getElementById("fbEmail").value.trim();
   var type = document.getElementById("fbType").value;
   var msg = document.getElementById("fbMsg").value.trim();
   var status = document.getElementById("fbStatus");
   var sendBtn = document.getElementById("fbSend");
+  var ratingText = fbRating ? fbRating + " / 5 stars" : "Nahi di";
   function showStatus(text, cls){
     status.textContent = text;
     status.className = "fb-status " + cls;
     status.hidden = false;
   }
   if(!name || !email || !msg){ showStatus("Pehle naam, email aur message likho.", "err"); return; }
+  /* Native FormSubmit POST ke hidden fields bhi sync rakho (backup tareeqa inhi ko use karta hai) */
+  document.getElementById("fbSubject").value = "FM_Templates Feedback — " + type;
+  document.getElementById("fbReplyto").value = email;
+  document.getElementById("fbRatingField").value = ratingText;
   sendBtn.disabled = true;
   sendBtn.textContent = "Bhej raha hai…";
   showStatus("Feedback bheja ja raha hai, thora intezar karo…", "ok");
-  /* Seedha delivery: FormSubmit AJAX is email par email bhejta hai — user ko email app nahi kholna parta */
+  function resetBtn(){
+    sendBtn.disabled = false;
+    sendBtn.textContent = "✉ Feedback Bhejo";
+  }
+  function onSuccess(){
+    showStatus("✓ Shukriya! Tumhara feedback seedha faizmuhammadbhanbhrouk@gmail.com par bhej diya gaya hai.", "ok");
+    toast("Feedback bhej diya gaya — shukriya!");
+    form.reset();
+    fbRating = 0;
+    document.querySelectorAll("#fbStars button").forEach(function(x){ x.classList.remove("on"); });
+    resetBtn();
+    setTimeout(closeFeedback, 2600);
+  }
+  function onActivation(){
+    /* FormSubmit pehli dafa sirf activation email bhejta hai — ye asal wajah hai ke feedback inbox mein nahi aata */
+    showStatus("Ek zaroori step reh gaya: FormSubmit ne faizmuhammadbhanbhrouk@gmail.com par ek ACTIVATION email bheja hai. Gmail khol kar us email mein diya hua link/confirm button ek dafa click karo — uske baghair koi feedback inbox mein nahi aayega. Confirm ke baad dobara feedback bhejo, phir seedha aa jayega.", "err");
+    resetBtn();
+  }
+  function onNativeFallback(){
+    /* Dusra tareeqa: form ko seedha FormSubmit par POST kar do (nayi tab mein) — fetch block ho to bhi delivery ho jati hai */
+    showStatus("Direct tareeqa ruk gaya — ab form seedha FormSubmit ko bheja ja raha hai, ek nayi tab khulegi. Wahan 'message sent' aaye to samjho feedback bhej diya gaya hai.", "err");
+    resetBtn();
+    form.submit();
+  }
+  /* Pehla tareeqa: FormSubmit AJAX — user ko email app nahi kholna parta */
   fetch("https://formsubmit.co/ajax/faizmuhammadbhanbhrouk@gmail.com", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
@@ -1994,33 +2030,25 @@ document.getElementById("fbForm").addEventListener("submit", function(e){
       Naam: name,
       Email: email,
       Qisam: type,
-      Rating: fbRating ? fbRating + " / 5 stars" : "Nahi di",
+      Rating: ratingText,
       Message: msg
     })
-  }).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(data){
-    if(data && (data.success === "true" || data.success === true)){
-      showStatus("✓ Shukriya! Tumhara feedback seedha faizmuhammadbhanbhrouk@gmail.com par bhej diya gaya hai.", "ok");
-      toast("Feedback bhej diya gaya — shukriya!");
-      document.getElementById("fbForm").reset();
-      fbRating = 0;
-      document.querySelectorAll("#fbStars button").forEach(function(x){ x.classList.remove("on"); });
-      setTimeout(closeFeedback, 2600);
+  }).then(function(r){
+    return r.json().catch(function(){ return {}; }).then(function(data){ return { ok: r.ok, data: data }; });
+  }).then(function(res){
+    var data = res.data || {};
+    var message = (data.message || "").toLowerCase();
+    if(data.success === "true" || data.success === true){
+      onSuccess();
+    } else if(message.indexOf("activ") !== -1){
+      onActivation();
+    } else if(res.ok && message.indexOf("confirm") !== -1){
+      onActivation();
     } else {
-      throw new Error("delivery-failed");
+      onNativeFallback();
     }
   }).catch(function(){
-    /* Backup: agar direct delivery na ho sake to purana email-app wala tareeqa khol do */
-    showStatus("Direct bhejna nahi ho saka — tumhara email app khol raha hoon, wahan bas Send dabana hai.", "err");
-    var subject = "FM_Templates Feedback — " + type;
-    var body = "Naam: " + name + "\nEmail: " + email + "\nQisam: " + type + "\nRating: " + (fbRating ? fbRating + " / 5 stars" : "Nahi di") + "\n\nMessage:\n" + msg;
-    var mailLink = document.createElement("a");
-    mailLink.href = "mailto:faizmuhammadbhanbhrouk@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    document.body.appendChild(mailLink);
-    mailLink.click();
-    document.body.removeChild(mailLink);
-  }).finally(function(){
-    sendBtn.disabled = false;
-    sendBtn.textContent = "✉ Feedback Bhejo";
+    onNativeFallback();
   });
 });
 

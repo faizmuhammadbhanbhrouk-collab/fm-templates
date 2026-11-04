@@ -199,37 +199,6 @@ footer{border-top:1px solid var(--line);background:var(--navy);margin-top:10px}
 .dev-credit .dev-dot{width:5px;height:5px;border-radius:50%;background:#fb923c;display:inline-block;flex:none}
 @media (max-width:640px){.foot-bottom-in{padding-left:14px;padding-right:14px}.dev-credit{font-size:13px}.dev-credit .dev-name{font-size:13.5px;padding:6px 14px 6px 10px}}
 
-/* ---------- Feedback ---------- */
-.feedback-fab{position:fixed;right:22px;bottom:22px;z-index:95;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:14px 22px;font-size:14.5px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 14px 32px rgba(185,63,4,.45);transition:background .15s ease,transform .15s ease}
-.feedback-fab:hover{background:var(--accent-dark);transform:translateY(-2px)}
-.feedback-fab svg{flex:none}
-body.detail .feedback-fab{display:none}
-.fb-overlay{position:fixed;inset:0;background:rgba(6,15,30,.64);z-index:110;display:none;align-items:flex-end;justify-content:flex-end;padding:18px}
-.fb-overlay.open{display:flex}
-.fb-panel{background:var(--surface);border-radius:22px;width:100%;max-width:440px;max-height:calc(100dvh - 36px);overflow:auto;box-shadow:var(--shadow-lg);padding:24px}
-.fb-panel h2{margin:0 0 4px;font-size:21px;letter-spacing:-.01em}
-.fb-panel .fb-sub{margin:0 0 16px;font-size:13.5px;color:var(--muted);line-height:1.55}
-.fb-panel .fb-sub b{color:var(--accent-dark)}
-.fb-field{margin-bottom:12px}
-.fb-field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
-.fb-field input,.fb-field select,.fb-field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;font-size:14px;background:#f7f9fb;color:var(--ink);outline:none}
-.fb-field input:focus,.fb-field select:focus,.fb-field textarea:focus{border-color:var(--accent);background:#fff}
-.fb-field textarea{min-height:96px;resize:vertical}
-.fb-stars{display:flex;gap:6px}
-.fb-stars button{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:#f7f9fb;font-size:19px;color:#c3cad4;padding:0}
-.fb-stars button.on{color:#d97706;border-color:#d97706;background:#fdf6d8}
-.fb-actions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
-.fb-actions .btn{flex:1}
-.fb-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin:12px 0 0}
-.fb-status{font-size:13.5px;font-weight:700;line-height:1.5;margin:12px 0 0;padding:11px 13px;border-radius:10px}
-.fb-status.ok{background:var(--green-soft);color:#0a5f4a}
-.fb-status.err{background:var(--rose-soft);color:#8c2440}
-html[data-theme="dark"] .fb-status.ok{color:#7fe3c3}
-html[data-theme="dark"] .fb-status.err{color:#ffb3c2}
-.fb-actions .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.fb-head{display:flex;align-items:flex-start;gap:10px}
-@media (max-width:640px){.feedback-fab{right:16px;bottom:16px;padding:12px 18px}.fb-overlay{padding:12px;align-items:flex-end;justify-content:center}}
-
 .pv-php{background:#e9e8f6}
 .tag.t-php{background:#e6e4f5;color:#4a4496;border-color:#c8c3ec}
 
@@ -337,7 +306,7 @@ html[data-theme="dark"] .hw .hw-bar span{background:#16233d;color:#9db0c8}
 html[data-theme="dark"] .chip{background:#16233d;color:var(--ink)}
 html[data-theme="dark"] .chip:hover{background:#1b2a44}
 html[data-theme="dark"] .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
-html[data-theme="dark"] .toolbar select,html[data-theme="dark"] .fb-field input,html[data-theme="dark"] .fb-field select,html[data-theme="dark"] .fb-field textarea{background:#16233d;color:var(--ink)}
+html[data-theme="dark"] .toolbar select{background:#16233d;color:var(--ink)}
 html[data-theme="dark"] .tag{background:#16233d;color:var(--muted)}
 html[data-theme="dark"] .btn-ghost{background:#16233d;color:var(--ink)}
 html[data-theme="dark"] .modal-body{background:#0a1120}
@@ -359,8 +328,6 @@ html[data-theme="dark"] .step i{color:#fff}
 /* Dark mode fixes: ye elements pehle safed reh jate thay (code tab par safed bg + safed text) */
 html[data-theme="dark"] .codebox{background:#060f1e;color:#d7e3f4;border-color:#263854}
 html[data-theme="dark"] .php-note{background:#2e2708;border-color:#5c4d10;color:#f2d879}
-html[data-theme="dark"] .fb-stars button{background:#16233d;color:#54687f;border-color:var(--line)}
-html[data-theme="dark"] .fb-stars button.on{background:#38300f;color:#f5b83d;border-color:#d97706}
 html[data-theme="dark"] .tag.t-html{color:#f0a35e}
 html[data-theme="dark"] .tag.t-css{color:#9db9f0}
 html[data-theme="dark"] .tag.t-js{color:#ecd25f}
@@ -556,7 +523,6 @@ img,video,iframe,table{max-width:100%}
   <div class="foot-in">
     <p style="display:flex;align-items:center;gap:10px;max-width:none"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJXZWJzaXRlIFRlbXBsYXRlcyBsb2dvIj4KICA8ZGVmcz4KICAgIDxjbGlwUGF0aCBpZD0ic3EiPjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI2MiIgaGVpZ2h0PSI2MiIgcng9IjE0Ii8+PC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI3NxKSI+CiAgICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iNjIiIGhlaWdodD0iNjIiIGZpbGw9IiMxMzFmMzgiLz4KICAgIDxyZWN0IHg9IjEiIHk9IjUwIiB3aWR0aD0iNjIiIGhlaWdodD0iMTQiIGZpbGw9IiNjMjQxMGMiLz4KICA8L2c+CiAgPHBhdGggZD0iTTIzLjUgMTkgTDEzLjUgMjkuNSBMMjMuNSA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmI5MjNjIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00MC41IDE5IEw1MC41IDI5LjUgTDQwLjUgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZiOTIzYyIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMzYuNSAxNy41IEwyNy41IDQxLjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+Cg==" alt="" width="30" height="30" style="border-radius:8px;display:block"><span><b>FM_Templates</b> · <span data-i18n="footBy">Practice library</span></span></p>
     <p data-i18n="footText">Tip: kisi bhi template ko khol kar us ka Live Preview dekho aur andar ke features try karo. Pehle chhote HTML examples se shuru karo, phir CSS aur JavaScript wale projects try karo — pasand aaye to Download kar lo.</p>
-    <button class="btn btn-primary" id="footFeedback" type="button" style="flex:none">✉ Feedback Do</button>
   </div>
   <div class="foot-bottom">
     <div class="foot-bottom-in">
@@ -564,70 +530,6 @@ img,video,iframe,table{max-width:100%}
     </div>
   </div>
 </footer>
-
-<!-- Feedback: right last (bottom-right) floating button -->
-<button class="feedback-fab" id="feedbackFab" type="button" aria-label="Feedback do">
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  Feedback
-</button>
-
-<div class="fb-overlay" id="fbOverlay" role="dialog" aria-modal="true" aria-label="Feedback form">
-  <div class="fb-panel">
-    <div class="fb-head">
-      <div style="flex:1">
-        <h2>Feedback Do</h2>
-        <p class="fb-sub">Tumhara message seedha is email par jayega:<br><b>faizmuhammadbhanbhrouk@gmail.com</b></p>
-      </div>
-      <button class="xbtn" id="fbClose" type="button" aria-label="Band karo">✕</button>
-    </div>
-    <form id="fbForm" action="https://formsubmit.co/faizmuhammadbhanbhrouk@gmail.com" method="POST" target="_blank">
-      <input type="hidden" name="_subject" id="fbSubject" value="FM_Templates Feedback">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_replyto" id="fbReplyto" value="">
-      <input type="hidden" name="Rating" id="fbRatingField" value="Nahi di">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-      <div class="fb-field">
-        <label for="fbName">Tumhara naam</label>
-        <input id="fbName" name="Naam" type="text" placeholder="Apna naam likho" required>
-      </div>
-      <div class="fb-field">
-        <label for="fbEmail">Tumhari email</label>
-        <input id="fbEmail" name="Email" type="email" placeholder="name@example.com" required>
-      </div>
-      <div class="fb-field">
-        <label for="fbType">Feedback kis bare mein hai?</label>
-        <select id="fbType" name="Qisam">
-          <option>Template ke bare mein</option>
-          <option>Naya template chahiye</option>
-          <option>Koi template chal nahi raha</option>
-          <option>Website ka design</option>
-          <option>Koi aur baat</option>
-        </select>
-      </div>
-      <div class="fb-field">
-        <label>Site kaisi lagi? Rating do</label>
-        <div class="fb-stars" id="fbStars">
-          <button type="button" data-star="1" aria-label="1 star">★</button>
-          <button type="button" data-star="2" aria-label="2 star">★</button>
-          <button type="button" data-star="3" aria-label="3 star">★</button>
-          <button type="button" data-star="4" aria-label="4 star">★</button>
-          <button type="button" data-star="5" aria-label="5 star">★</button>
-        </div>
-      </div>
-      <div class="fb-field">
-        <label for="fbMsg">Tumhara message</label>
-        <textarea id="fbMsg" name="Message" placeholder="Apna feedback yahan likho..." required></textarea>
-      </div>
-      <div class="fb-actions">
-        <button class="btn btn-primary" type="submit" id="fbSend">✉ Feedback Bhejo</button>
-        <a class="btn btn-ghost" href="mailto:faizmuhammadbhanbhrouk@gmail.com?subject=FM_Templates%20Feedback">Direct Email Karo</a>
-      </div>
-      <p class="fb-status" id="fbStatus" role="status" hidden></p>
-      <p class="fb-note">“Feedback Bhejo” dabane par tumhara feedback <b>seedha email ban kar</b> is address par chala jayega: faizmuhammadbhanbhrouk@gmail.com — koi email app kholne ya alag se Send dabane ki zaroorat nahi. Agar net slow ho to thora intezar karna, “bhej raha hai” wala message aayega.<br><b>Site owner ke liye ek dafa ka step:</b> pehle feedback par FormSubmit is Gmail par ek <b>activation email</b> bhejta hai — us mein diya link ek dafa click karke confirm karna zaroori hai, uske baghair koi feedback inbox mein nahi aayega. Confirm ke baad har feedback khud-ba-khud aana shuru ho jayega.</p>
-    </form>
-  </div>
-</div>
 
 <!-- Template workspace — isi page mein khulta hai, wapas button se list par -->
 <section class="tpl-page" id="tplPage">
@@ -1953,104 +1855,6 @@ function applyLang(){
   document.documentElement.lang = "ur";
   renderFilters(); renderGrid();
 }
-
-/* ================= FEEDBACK (email: faizmuhammadbhanbhrouk@gmail.com) ================= */
-var fbRating = 0;
-var fbOverlay = document.getElementById("fbOverlay");
-function openFeedback(){ fbOverlay.classList.add("open"); }
-function closeFeedback(){ fbOverlay.classList.remove("open"); }
-document.getElementById("feedbackFab").addEventListener("click", openFeedback);
-document.getElementById("footFeedback").addEventListener("click", openFeedback);
-document.getElementById("fbClose").addEventListener("click", closeFeedback);
-fbOverlay.addEventListener("click", function(e){ if(e.target===fbOverlay) closeFeedback(); });
-document.querySelectorAll("#fbStars button").forEach(function(b){
-  b.addEventListener("click", function(){
-    fbRating = +b.getAttribute("data-star");
-    document.querySelectorAll("#fbStars button").forEach(function(x){
-      x.classList.toggle("on", +x.getAttribute("data-star") <= fbRating);
-    });
-  });
-});
-document.getElementById("fbForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  var form = document.getElementById("fbForm");
-  var name = document.getElementById("fbName").value.trim();
-  var email = document.getElementById("fbEmail").value.trim();
-  var type = document.getElementById("fbType").value;
-  var msg = document.getElementById("fbMsg").value.trim();
-  var status = document.getElementById("fbStatus");
-  var sendBtn = document.getElementById("fbSend");
-  var ratingText = fbRating ? fbRating + " / 5 stars" : "Nahi di";
-  function showStatus(text, cls){
-    status.textContent = text;
-    status.className = "fb-status " + cls;
-    status.hidden = false;
-  }
-  if(!name || !email || !msg){ showStatus("Pehle naam, email aur message likho.", "err"); return; }
-  /* Native FormSubmit POST ke hidden fields bhi sync rakho (backup tareeqa inhi ko use karta hai) */
-  document.getElementById("fbSubject").value = "FM_Templates Feedback — " + type;
-  document.getElementById("fbReplyto").value = email;
-  document.getElementById("fbRatingField").value = ratingText;
-  sendBtn.disabled = true;
-  sendBtn.textContent = "Bhej raha hai…";
-  showStatus("Feedback bheja ja raha hai, thora intezar karo…", "ok");
-  function resetBtn(){
-    sendBtn.disabled = false;
-    sendBtn.textContent = "✉ Feedback Bhejo";
-  }
-  function onSuccess(){
-    showStatus("✓ Shukriya! Tumhara feedback seedha faizmuhammadbhanbhrouk@gmail.com par bhej diya gaya hai.", "ok");
-    toast("Feedback bhej diya gaya — shukriya!");
-    form.reset();
-    fbRating = 0;
-    document.querySelectorAll("#fbStars button").forEach(function(x){ x.classList.remove("on"); });
-    resetBtn();
-    setTimeout(closeFeedback, 2600);
-  }
-  function onActivation(){
-    /* FormSubmit pehli dafa sirf activation email bhejta hai — ye asal wajah hai ke feedback inbox mein nahi aata */
-    showStatus("Ek zaroori step reh gaya: FormSubmit ne faizmuhammadbhanbhrouk@gmail.com par ek ACTIVATION email bheja hai. Gmail khol kar us email mein diya hua link/confirm button ek dafa click karo — uske baghair koi feedback inbox mein nahi aayega. Confirm ke baad dobara feedback bhejo, phir seedha aa jayega.", "err");
-    resetBtn();
-  }
-  function onNativeFallback(){
-    /* Dusra tareeqa: form ko seedha FormSubmit par POST kar do (nayi tab mein) — fetch block ho to bhi delivery ho jati hai */
-    showStatus("Direct tareeqa ruk gaya — ab form seedha FormSubmit ko bheja ja raha hai, ek nayi tab khulegi. Wahan 'message sent' aaye to samjho feedback bhej diya gaya hai.", "err");
-    resetBtn();
-    form.submit();
-  }
-  /* Pehla tareeqa: FormSubmit AJAX — user ko email app nahi kholna parta */
-  fetch("https://formsubmit.co/ajax/faizmuhammadbhanbhrouk@gmail.com", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({
-      _subject: "FM_Templates Feedback — " + type,
-      _template: "table",
-      _captcha: "false",
-      _replyto: email,
-      Naam: name,
-      Email: email,
-      Qisam: type,
-      Rating: ratingText,
-      Message: msg
-    })
-  }).then(function(r){
-    return r.json().catch(function(){ return {}; }).then(function(data){ return { ok: r.ok, data: data }; });
-  }).then(function(res){
-    var data = res.data || {};
-    var message = (data.message || "").toLowerCase();
-    if(data.success === "true" || data.success === true){
-      onSuccess();
-    } else if(message.indexOf("activ") !== -1){
-      onActivation();
-    } else if(res.ok && message.indexOf("confirm") !== -1){
-      onActivation();
-    } else {
-      onNativeFallback();
-    }
-  }).catch(function(){
-    onNativeFallback();
-  });
-});
 
 /* ================= DARK / LIGHT THEME ================= */
 function setTheme(mode){
